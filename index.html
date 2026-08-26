@@ -109,6 +109,23 @@
 
   .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
   .mobile-menu.open { max-height: 400px; }
+
+  /* Plávajúce tlačidlo na zapnutie/vypnutie hudby na pozadí */
+  .audio-btn {
+    position: fixed;
+    top: 80px;
+    right: 1rem;
+    z-index: 40;
+  }
+  @media (min-width: 640px){ .audio-btn { right: 1.5rem; } }
+  .audio-btn.is-playing { animation: audioPulse 2.6s ease-in-out infinite; }
+  @keyframes audioPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(228,168,61,0.45); }
+    50%      { box-shadow: 0 0 0 9px rgba(228,168,61,0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .audio-btn.is-playing { animation: none; }
+  }
 </style>
 </head>
 <body class="font-body text-ink antialiased">
@@ -144,6 +161,13 @@
     </nav>
   </div>
 </header>
+
+<!-- ============ HUDBA NA POZADÍ ============ -->
+<audio id="bgAudio" src="Jakelaska.mp3" loop preload="auto"></audio>
+<button id="audioToggle" type="button" aria-pressed="true" aria-label="Vypnúť hudbu na pozadí"
+  class="audio-btn w-12 h-12 rounded-full bg-forest text-mustard shadow-lg flex items-center justify-center hover:bg-forest-light transition-colors">
+  <i id="audioIcon" class="fa-solid fa-volume-high text-lg"></i>
+</button>
 
 <!-- ============ HERO ============ -->
 <section class="relative overflow-hidden">
@@ -487,6 +511,46 @@
 
   renderTrips();
   renderHistory();
+
+  // Hudba na pozadí — automatické spustenie po načítaní + prepínacie tlačidlo
+  const bgAudio = document.getElementById('bgAudio');
+  const audioBtn = document.getElementById('audioToggle');
+  const audioIcon = document.getElementById('audioIcon');
+
+  function setAudioIcon(isOn){
+    audioIcon.className = isOn ? 'fa-solid fa-volume-high text-lg' : 'fa-solid fa-volume-xmark text-lg';
+    audioBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    audioBtn.setAttribute('aria-label', isOn ? 'Vypnúť hudbu na pozadí' : 'Zapnúť hudbu na pozadí');
+    audioBtn.classList.toggle('is-playing', isOn);
+  }
+
+  function unlockAutoplay(){
+    bgAudio.muted = false;
+    bgAudio.play().then(()=> setAudioIcon(true)).catch(()=>{});
+    ['click','keydown','touchstart'].forEach(evt => document.removeEventListener(evt, unlockAutoplay));
+  }
+
+  // Skúsime spustiť hudbu hneď po načítaní stránky
+  bgAudio.play().then(()=>{
+    setAudioIcon(true);
+  }).catch(()=>{
+    // Prehliadač zablokoval prehrávanie so zvukom — skúsime potichu a odblokujeme pri prvej interakcii
+    bgAudio.muted = true;
+    bgAudio.play().then(()=>{
+      setAudioIcon(false);
+      ['click','keydown','touchstart'].forEach(evt => document.addEventListener(evt, unlockAutoplay, { once: true }));
+    }).catch(()=> setAudioIcon(false));
+  });
+
+  audioBtn.addEventListener('click', ()=>{
+    if (bgAudio.paused || bgAudio.muted){
+      bgAudio.muted = false;
+      bgAudio.play().then(()=> setAudioIcon(true)).catch(()=>{});
+    } else {
+      bgAudio.pause();
+      setAudioIcon(false);
+    }
+  });
 
   // Mobile menu
   const menuBtn = document.getElementById('menuBtn');
