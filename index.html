@@ -202,7 +202,7 @@
       <p class="text-ink/75 leading-relaxed mb-4">
         SSOSturisti štartujú do nového školského roka 2026/2027. Stretávame sa raz týždenne na krúžku,
         kde plánujeme trasy, učíme sa čítať turistickú mapu a orientovať sa v teréne — a raz za týždeň,
-        počas víkendov, vyrážame na jednodňový osviežujúci výlet do prírody.
+        hneď po víkende, vyrážame na jednodňový osviežujúci výlet do prírody.
       </p>
       <p class="text-ink/75 leading-relaxed">
         Naším cieľom je spoznávať vlastný kraj a prírodu Slovenska. Výlety prispôsobujeme veku a kondícii
@@ -216,12 +216,12 @@
         <p class="text-xs font-mono text-ink/60 uppercase mt-1">školský rok</p>
       </div>
       <div>
-        <p class="font-display font-black text-3xl text-forest">6</p>
+        <p class="font-display font-black text-3xl text-forest">34</p>
         <p class="text-xs font-mono text-ink/60 uppercase mt-1">aktívnych členov</p>
       </div>
       <div>
-        <p class="font-display font-black text-3xl text-forest">víkend, sobota či nedeľa</p>
-        <p class="text-xs font-mono text-ink/60 uppercase mt-1">stretnutie, niekedy ráno</p>
+        <p class="font-display font-black text-3xl text-forest">Streda</p>
+        <p class="text-xs font-mono text-ink/60 uppercase mt-1">stretnutie, 14:30</p>
       </div>
       <div>
         <p class="font-display font-black text-3xl text-forest">1×</p>
@@ -272,7 +272,7 @@
 
     <!-- Login form -->
     <div id="loginBox" class="bg-card rounded-sm p-5 sm:p-6 ticket-edge">
-      <p class="text-ink/70 mb-4 text-sm">Táto sekcia je určená len pre vedúceho krúžku. Zadávnie Nasledujúcich výletov a pridanie aktuálnej srpávy. Zadaj prístupové heslo.</p>
+      <p class="text-ink/70 mb-4 text-sm">Táto sekcia je určená len pre vedúceho krúžku. Zadaj prístupové heslo.</p>
       <form id="loginForm" class="flex flex-col sm:flex-row gap-3">
         <div class="relative flex-1">
           <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40"></i>
@@ -296,8 +296,8 @@
       <div class="bg-card rounded-b-sm p-5 sm:p-6">
         <!-- tabs -->
         <div class="flex gap-2 mb-5 font-mono text-sm">
-          <button data-tab="tripTab" class="tabBtn px-4 py-2 rounded-sm bg-forest text-white">+ Nový výlet</button>
-          <button data-tab="historyTab" class="tabBtn px-4 py-2 rounded-sm bg-forest/10 text-forest">+ Príspevok do histórie</button>
+          <button data-tab="tripForm" class="tabBtn px-4 py-2 rounded-sm bg-forest text-white">+ Nový výlet</button>
+          <button data-tab="historyForm" class="tabBtn px-4 py-2 rounded-sm bg-forest/10 text-forest">+ Príspevok do histórie</button>
         </div>
 
         <!-- Add trip form -->
@@ -345,8 +345,17 @@
             <input required type="text" name="title" placeholder="napr. Jesenná túra Slovenským rajom" class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
           </div>
           <div class="sm:col-span-2">
-            <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Odkaz na fotku (URL, nepovinné)</label>
-            <input type="url" name="image" placeholder="https://…" class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block text-xs font-mono uppercase text-ink/60">Fotky z výletu (max. 15)</label>
+              <span id="photoCount" class="text-xs font-mono text-ink/50">0 / 15</span>
+            </div>
+            <label for="historyPhotos" class="flex items-center justify-center gap-2 border-2 border-dashed border-forest/25 rounded-sm px-4 py-4 text-sm text-ink/60 cursor-pointer hover:border-rust hover:text-rust transition-colors bg-white">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>Klikni a vyber fotky z počítača alebo mobilu</span>
+            </label>
+            <input type="file" id="historyPhotos" accept="image/*" multiple class="hidden">
+            <p class="text-xs text-ink/45 mt-1.5">Fotky sa automaticky zmenšia a orežú na jednotný formát, aby galéria nezaberala zbytočne veľa miesta.</p>
+            <div id="photoPreview" class="mt-3 grid grid-cols-4 sm:grid-cols-5 gap-2"></div>
           </div>
           <div class="sm:col-span-2">
             <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Krátka správa z výletu</label>
@@ -467,15 +476,29 @@
 
   function historyCardHTML(h, idx){
     const delBtn = isAdmin ? `<button data-del-history="${idx}" class="absolute top-3 right-3 z-10 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-ink/50 hover:text-rust" aria-label="Odstrániť príspevok"><i class="fa-solid fa-trash"></i></button>` : '';
-    const img = h.image && h.image.trim() ? h.image : 'https://picsum.photos/seed/turistika/500/360';
+
+    // Podpora starších záznamov s jednou fotkou (h.image) aj nových s galériou (h.photos)
+    const photos = (h.photos && h.photos.length) ? h.photos : (h.image ? [h.image] : []);
+    let galleryHTML;
+    if (photos.length === 0){
+      galleryHTML = `<img src="https://picsum.photos/seed/turistika/500/360" alt="${h.title}" class="w-full h-44 object-cover">`;
+    } else if (photos.length === 1){
+      galleryHTML = `<img src="${photos[0]}" alt="${h.title}" class="w-full h-44 object-cover" onerror="this.src='https://picsum.photos/seed/fallback/500/360'">`;
+    } else {
+      // Flexibilný album — mriežka sa naťahuje podľa počtu fotiek
+      const tiles = photos.map(p => `<img src="${p}" alt="${h.title}" class="w-full h-full object-cover" onerror="this.style.display='none'">`).join('');
+      galleryHTML = `<div class="grid grid-cols-3 gap-0.5 h-44">${tiles}</div>`;
+    }
+
     return `
     <div class="relative bg-card ticket-edge rounded-sm overflow-hidden">
       ${delBtn}
-      <img src="${img}" alt="${h.title}" class="w-full h-44 object-cover" onerror="this.src='https://picsum.photos/seed/fallback/500/360'">
+      ${galleryHTML}
       <div class="p-5">
         <p class="font-mono text-xs uppercase tracking-widest text-rust mb-2">${formatDate(h.date)}</p>
         <h3 class="font-display font-bold text-lg text-forest mb-2 leading-snug">${h.title}</h3>
         <p class="text-sm text-ink/70 leading-relaxed">${h.text}</p>
+        ${photos.length > 1 ? `<p class="text-xs font-mono text-ink/40 mt-2"><i class="fa-solid fa-images mr-1"></i>${photos.length} fotiek</p>` : ''}
       </div>
     </div>`;
   }
@@ -628,6 +651,79 @@
     setTimeout(()=> msg.classList.add('hidden'), 2500);
   });
 
+  // Upload fotiek do histórie — automatické orezanie na jednotný formát a zmenšenie
+  const MAX_PHOTOS = 15;
+  const PHOTO_MAX_DIM = 900;      // px, dlhšia strana po orezaní
+  const PHOTO_ASPECT = 4 / 3;     // jednotný pomer strán pre album
+  const PHOTO_QUALITY = 0.72;     // kvalita JPEG kompresie
+  let selectedPhotos = [];
+
+  function resizeAndCropImage(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Súbor sa nepodarilo načítať'));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Súbor nie je platný obrázok'));
+        img.onload = () => {
+          // Orezanie na stred podľa jednotného pomeru strán (album vyzerá jednotne)
+          let srcW = img.width, srcH = img.height;
+          let cropW = srcW, cropH = srcW / PHOTO_ASPECT;
+          if (cropH > srcH){ cropH = srcH; cropW = srcH * PHOTO_ASPECT; }
+          const sx = (srcW - cropW) / 2;
+          const sy = (srcH - cropH) / 2;
+
+          let outW = PHOTO_MAX_DIM, outH = PHOTO_MAX_DIM / PHOTO_ASPECT;
+          const canvas = document.createElement('canvas');
+          canvas.width = outW; canvas.height = outH;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, sx, sy, cropW, cropH, 0, 0, outW, outH);
+          resolve(canvas.toDataURL('image/jpeg', PHOTO_QUALITY));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderPhotoPreview(){
+    const box = document.getElementById('photoPreview');
+    const count = document.getElementById('photoCount');
+    count.textContent = `${selectedPhotos.length} / ${MAX_PHOTOS}`;
+    box.innerHTML = selectedPhotos.map((src, i) => `
+      <div class="relative">
+        <img src="${src}" class="w-full h-16 object-cover rounded-sm border border-forest/15">
+        <button type="button" data-remove-photo="${i}" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rust text-white text-xs flex items-center justify-center shadow" aria-label="Odstrániť fotku">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>`).join('');
+    box.querySelectorAll('[data-remove-photo]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedPhotos.splice(parseInt(btn.dataset.removePhoto, 10), 1);
+        renderPhotoPreview();
+      });
+    });
+  }
+
+  document.getElementById('historyPhotos').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []);
+    const room = MAX_PHOTOS - selectedPhotos.length;
+    if (files.length > room){
+      alert(`Dá sa pridať už len ${room} fotiek (maximum je ${MAX_PHOTOS}). Zvyšné sa nepridali.`);
+    }
+    const toProcess = files.slice(0, room);
+    for (const file of toProcess){
+      try {
+        const dataUrl = await resizeAndCropImage(file);
+        selectedPhotos.push(dataUrl);
+      } catch(err){
+        console.error(err);
+      }
+    }
+    renderPhotoPreview();
+    e.target.value = ''; // umožní znova vybrať tie isté súbory nabudúce
+  });
+
   // Add history
   document.getElementById('historyForm').addEventListener('submit', (e)=>{
     e.preventDefault();
@@ -635,12 +731,20 @@
     history.push({
       date: f.date.value,
       title: f.title.value.trim(),
-      image: f.image.value.trim(),
+      photos: selectedPhotos.slice(),
       text: f.text.value.trim(),
     });
-    save(HISTORY_KEY, history);
+    try {
+      save(HISTORY_KEY, history);
+    } catch(err){
+      history.pop();
+      alert('Úložisko prehliadača je plné. Skús pridať menej fotiek alebo najprv vymaž staršie príspevky.');
+      return;
+    }
     renderHistory();
     f.reset();
+    selectedPhotos = [];
+    renderPhotoPreview();
     const msg = document.getElementById('historyAddedMsg');
     msg.classList.remove('hidden');
     setTimeout(()=> msg.classList.add('hidden'), 2500);
