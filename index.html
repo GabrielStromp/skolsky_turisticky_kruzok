@@ -200,19 +200,20 @@
       <p class="font-mono text-rust text-xs tracking-[0.2em] uppercase mb-3">O nás</p>
       <h2 class="font-display font-bold text-3xl sm:text-4xl text-forest mb-5">Krúžok pre tých, čo radšej stúpajú než sedia</h2>
       <p class="text-ink/75 leading-relaxed mb-4">
-        SSOSturisti funguje pri našej škole už niekoľko rokov. Stretávame sa raz týždenne na krúžku,
-        kde plánujeme trasy, učíme sa čítať turistickú mapu a orientovať sa v teréne — a raz za dva týždne
-        vyrážame na skutočný víkendový výlet do hôr.
+        SSOSturisti štartujú do nového školského roka 2026/2027. Stretávame sa raz týždenne na krúžku,
+        kde plánujeme trasy, učíme sa čítať turistickú mapu a orientovať sa v teréne — a raz za týždeň,
+        hneď po víkende, vyrážame na jednodňový osviežujúci výlet do prírody.
       </p>
       <p class="text-ink/75 leading-relaxed">
-        Výlety prispôsobujeme veku a kondícii účastníkov, vždy chodíme so skúseným vedúcim a dodržiavame
-        zásady bezpečnosti v horách. Nové tváre medzi seba radi privítame na ktoromkoľvek stretnutí.
+        Naším cieľom je spoznávať vlastný kraj a prírodu Slovenska. Výlety prispôsobujeme veku a kondícii
+        účastníkov, vždy chodíme so skúseným vedúcim a dodržiavame zásady bezpečnosti v teréne.
+        Nové tváre medzi seba radi privítame na ktoromkoľvek stretnutí.
       </p>
     </div>
     <div class="md:col-span-2 bg-card ticket-edge rounded-sm p-6 grid grid-cols-2 gap-6 contour-bg-light">
       <div>
-        <p class="font-display font-black text-3xl text-forest">2018</p>
-        <p class="text-xs font-mono text-ink/60 uppercase mt-1">rok založenia</p>
+        <p class="font-display font-black text-3xl text-forest">26/27</p>
+        <p class="text-xs font-mono text-ink/60 uppercase mt-1">školský rok</p>
       </div>
       <div>
         <p class="font-display font-black text-3xl text-forest">34</p>
@@ -223,8 +224,8 @@
         <p class="text-xs font-mono text-ink/60 uppercase mt-1">stretnutie, 14:30</p>
       </div>
       <div>
-        <p class="font-display font-black text-3xl text-forest">2×</p>
-        <p class="text-xs font-mono text-ink/60 uppercase mt-1">výlet za mesiac</p>
+        <p class="font-display font-black text-3xl text-forest">1×</p>
+        <p class="text-xs font-mono text-ink/60 uppercase mt-1">výlet za týždeň</p>
       </div>
     </div>
   </div>
@@ -264,21 +265,21 @@
 </section>
 
 <!-- ============ ADMINISTRÁCIA ============ -->
-<section id="admin" class="bg-forest contour-bg py-20">
+<section id="admin" class="bg-forest contour-bg py-12">
   <div class="max-w-3xl mx-auto px-5 sm:px-8">
-    <p class="font-mono text-mustard text-xs tracking-[0.2em] uppercase mb-3">Chránená sekcia</p>
-    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mb-8">Administrácia krúžku</h2>
+    <p class="font-mono text-mustard text-xs tracking-[0.2em] uppercase mb-2">Chránená sekcia</p>
+    <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-5">Administrácia krúžku</h2>
 
     <!-- Login form -->
-    <div id="loginBox" class="bg-card rounded-sm p-7 sm:p-9 ticket-edge">
-      <p class="text-ink/70 mb-5 text-sm">Táto sekcia je určená len pre vedúceho krúžku. Zadaj prístupové heslo.</p>
+    <div id="loginBox" class="bg-card rounded-sm p-5 sm:p-6 ticket-edge">
+      <p class="text-ink/70 mb-4 text-sm">Táto sekcia je určená len pre vedúceho krúžku. Zadaj prístupové heslo.</p>
       <form id="loginForm" class="flex flex-col sm:flex-row gap-3">
         <div class="relative flex-1">
           <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-ink/40"></i>
           <input id="passwordInput" type="password" required placeholder="Heslo"
-            class="w-full pl-10 pr-4 py-3 rounded-sm border border-forest/25 bg-white text-ink placeholder:text-ink/40" />
+            class="w-full pl-10 pr-4 py-2.5 rounded-sm border border-forest/25 bg-white text-ink placeholder:text-ink/40" />
         </div>
-        <button type="submit" class="bg-rust hover:bg-rust-dark text-white font-semibold px-6 py-3 rounded-sm transition-colors whitespace-nowrap">
+        <button type="submit" class="bg-rust hover:bg-rust-dark text-white font-semibold px-6 py-2.5 rounded-sm transition-colors whitespace-nowrap">
           Prihlásiť sa
         </button>
       </form>
@@ -292,9 +293,9 @@
         <button id="logoutBtn" class="text-sm text-ink/60 hover:text-rust font-medium">Odhlásiť sa</button>
       </div>
 
-      <div class="bg-card rounded-b-sm p-7 sm:p-9">
+      <div class="bg-card rounded-b-sm p-5 sm:p-6">
         <!-- tabs -->
-        <div class="flex gap-2 mb-7 font-mono text-sm">
+        <div class="flex gap-2 mb-5 font-mono text-sm">
           <button data-tab="tripTab" class="tabBtn px-4 py-2 rounded-sm bg-forest text-white">+ Nový výlet</button>
           <button data-tab="historyTab" class="tabBtn px-4 py-2 rounded-sm bg-forest/10 text-forest">+ Príspevok do histórie</button>
         </div>
