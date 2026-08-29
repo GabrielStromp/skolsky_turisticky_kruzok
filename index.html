@@ -140,11 +140,13 @@
       <span class="font-display font-bold text-lg leading-none text-forest">SSOS<span class="text-rust">turisti</span></span>
     </a>
 
-    <nav class="hidden md:flex items-center gap-7 font-medium text-sm text-forest">
+    <nav class="hidden md:flex items-center gap-6 font-medium text-sm text-forest">
       <a href="#o-nas" class="hover:text-rust transition-colors">O nás</a>
+      <a href="#prihlasenie" class="hover:text-rust transition-colors">Prihlásenie</a>
       <a href="#plan" class="hover:text-rust transition-colors">Víkendový plán</a>
       <a href="#historia" class="hover:text-rust transition-colors">História &amp; Galéria</a>
       <a href="#admin" class="hover:text-rust transition-colors">Administrácia</a>
+      <a href="#vedenie" class="hover:text-rust transition-colors">Vedúci krúžku</a>
     </nav>
 
     <button id="menuBtn" class="md:hidden w-10 h-10 flex items-center justify-center text-forest text-xl" aria-label="Otvoriť menu" aria-expanded="false">
@@ -155,9 +157,11 @@
   <div id="mobileMenu" class="mobile-menu md:hidden bg-paper border-b border-forest/15">
     <nav class="flex flex-col px-5 py-3 gap-1 font-medium text-forest">
       <a href="#o-nas" class="py-2.5 border-b border-forest/10">O nás</a>
+      <a href="#prihlasenie" class="py-2.5 border-b border-forest/10">Prihlásenie</a>
       <a href="#plan" class="py-2.5 border-b border-forest/10">Víkendový plán</a>
       <a href="#historia" class="py-2.5 border-b border-forest/10">História &amp; Galéria</a>
-      <a href="#admin" class="py-2.5">Administrácia</a>
+      <a href="#admin" class="py-2.5 border-b border-forest/10">Administrácia</a>
+      <a href="#vedenie" class="py-2.5">Vedúci krúžku</a>
     </nav>
   </div>
 </header>
@@ -189,6 +193,7 @@
       <a href="#historia" class="inline-flex items-center gap-2 text-white/85 hover:text-mustard font-medium px-2 py-3.5 transition-colors">
         Kde sme už boli <i class="fa-solid fa-arrow-right text-sm"></i>
       </a>
+      <span id="nextTripCountdown" class="ml-auto font-mono text-xs sm:text-sm text-mustard/90 text-right"></span>
     </div>
   </div>
 </section>
@@ -231,6 +236,58 @@
   </div>
 </section>
 
+<!-- ============ PRIHLÁSENIE NA VÝLET ============ -->
+<section id="prihlasenie" class="bg-forest-light/10 py-20 border-y border-forest/10">
+  <div class="max-w-3xl mx-auto px-5 sm:px-8">
+    <p class="font-mono text-rust text-xs tracking-[0.2em] uppercase mb-3">Ideš s nami?</p>
+    <h2 class="font-display font-bold text-3xl sm:text-4xl text-forest mb-5">Prihlás sa na výlet</h2>
+    <p class="text-ink/75 leading-relaxed mb-8">
+      Vyplň krátky formulár — meno, priezvisko, prezývku aj triedu. Systém si k tomu automaticky
+      zaznamená aj čas prihlásenia. Zoznam prihlásených vidí len vedúci krúžku.
+    </p>
+
+    <div id="signupFormWrap" class="bg-card ticket-edge rounded-sm overflow-hidden">
+      <iframe id="signupFormFrame" class="w-full hidden" style="min-height: 620px;" loading="lazy" title="Prihlasovací formulár na výlet"></iframe>
+      <div id="signupFormEmpty" class="p-8 text-center text-ink/60">
+        <i class="fa-solid fa-clipboard-list text-3xl text-forest/30 mb-3"></i>
+        <p class="text-sm">Prihlasovací formulár zatiaľ nie je nastavený. Ozvi sa vedúcemu krúžku, prípadne — ak si administrátor — nastav ho v sekcii Administrácia.</p>
+      </div>
+    </div>
+    <a id="signupFormLink" href="#" target="_blank" rel="noopener noreferrer" class="hidden mt-3 inline-flex items-center gap-2 text-sm text-forest hover:text-rust font-medium transition-colors">
+      Formulár sa nezobrazuje správne? Otvoriť v novom okne <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+    </a>
+  </div>
+</section>
+
+<!-- ============ VEDÚCI KRÚŽKU ============ -->
+<section id="vedenie" class="max-w-6xl mx-auto px-5 sm:px-8 py-20">
+  <p class="font-mono text-rust text-xs tracking-[0.2em] uppercase mb-3">Ľudia za krúžkom</p>
+  <h2 class="font-display font-bold text-3xl sm:text-4xl text-forest mb-10">Vedúci krúžku</h2>
+
+  <div class="grid sm:grid-cols-3 gap-6">
+    <div class="bg-card ticket-edge rounded-sm p-6 text-center">
+      <div class="w-20 h-20 mx-auto rounded-full bg-forest text-white flex items-center justify-center font-display font-bold text-2xl mb-4">MR</div>
+      <h3 class="font-display font-bold text-lg text-forest mb-1">Marcela Renčková</h3>
+      <p class="font-mono text-xs uppercase tracking-wide text-rust mb-3">Hlavná vedúca</p>
+      <p class="text-sm text-ink/70 leading-relaxed">Plánuje trasy a drží krúžok pokope už niekoľko rokov. Najradšej chodí tam, kde mapa končí a začína dobrodružstvo.</p>
+    </div>
+
+    <div class="bg-card ticket-edge rounded-sm p-6 text-center">
+      <div class="w-20 h-20 mx-auto rounded-full bg-rust text-white flex items-center justify-center font-display font-bold text-2xl mb-4">GS</div>
+      <h3 class="font-display font-bold text-lg text-forest mb-1">Gabriel Stromp</h3>
+      <p class="font-mono text-xs uppercase tracking-wide text-rust mb-3">Technika a organizácia</p>
+      <p class="text-sm text-ink/70 leading-relaxed">Má na starosti mapy, techniku a túto webovú stránku. Keď niekto nevie, kam ísť, spýtajte sa jeho.</p>
+    </div>
+
+    <div class="bg-card ticket-edge rounded-sm p-6 text-center">
+      <div class="w-20 h-20 mx-auto rounded-full bg-forest-light text-white flex items-center justify-center font-display font-bold text-2xl mb-4">LP</div>
+      <h3 class="font-display font-bold text-lg text-forest mb-1">Lenka Prigancová</h3>
+      <p class="font-mono text-xs uppercase tracking-wide text-rust mb-3">Bezpečnosť a rodičia</p>
+      <p class="text-sm text-ink/70 leading-relaxed">Stará sa o bezpečnosť na trase a komunikáciu s rodičmi. Vždy má v batohu náplasť aj úsmev navyše.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ VÍKENDOVÝ PLÁN VÝLETOV ============ -->
 <section id="plan" class="bg-forest-light/10 py-20 border-y border-forest/10">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
@@ -259,9 +316,45 @@
   <h2 class="font-display font-bold text-3xl sm:text-4xl text-forest mb-10">História a fotogaléria</h2>
 
   <div id="historyGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- history cards injected by JS -->
+    <!-- Trasa zrazu — vždy prvá dlaždica, mimo dynamického obsahu -->
+    <div class="relative bg-card ticket-edge rounded-sm overflow-hidden">
+      <div class="w-full h-44 bg-forest/5">
+        <iframe id="routeMapFrame"
+          src="https://www.google.com/maps?q=%C5%BDelezni%C4%8Dn%C3%A1%20stanica%20Ko%C5%A1ice&output=embed"
+          class="w-full h-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa trasy"></iframe>
+      </div>
+      <div class="p-5">
+        <p class="font-mono text-xs uppercase tracking-widest text-rust mb-2">Trasa</p>
+        <h3 class="font-display font-bold text-lg text-forest mb-2 leading-snug">Odkiaľ vyrážame</h3>
+        <p id="routeMapDesc" class="text-sm text-ink/70 leading-relaxed">Zraz je vždy na stanici, odtiaľ presun na miesto štartu konkrétneho výletu, okruh do cieľa a späť na to isté miesto zrazu.</p>
+      </div>
+    </div>
+    <div id="historyDynamic" style="display:contents">
+      <!-- history cards injected by JS -->
+    </div>
   </div>
   <p id="historyEmpty" class="hidden text-ink/60 italic">Zatiaľ tu nie sú žiadne záznamy.</p>
+
+  <!-- Štatistika krúžku -->
+  <div class="mt-12 pt-8 border-t border-forest/10 flex flex-wrap items-center justify-center gap-x-10 gap-y-5 text-center">
+    <div>
+      <p class="font-display font-black text-2xl sm:text-3xl text-forest">420 km</p>
+      <p class="text-xs font-mono text-ink/50 uppercase mt-1">od začiatku</p>
+    </div>
+    <div>
+      <p class="font-display font-black text-2xl sm:text-3xl text-forest">18 km</p>
+      <p class="text-xs font-mono text-ink/50 uppercase mt-1">tohto roku</p>
+    </div>
+    <div>
+      <p id="statTripsCount" class="font-display font-black text-2xl sm:text-3xl text-forest">3</p>
+      <p class="text-xs font-mono text-ink/50 uppercase mt-1">výletov</p>
+    </div>
+    <div>
+      <p class="font-display font-black text-2xl sm:text-3xl text-forest">34</p>
+      <p class="text-xs font-mono text-ink/50 uppercase mt-1">účastníkov</p>
+    </div>
+  </div>
 </section>
 
 <!-- ============ ADMINISTRÁCIA ============ -->
@@ -295,9 +388,11 @@
 
       <div class="bg-card rounded-b-sm p-5 sm:p-6">
         <!-- tabs -->
-        <div class="flex gap-2 mb-5 font-mono text-sm">
+        <div class="flex flex-wrap gap-2 mb-5 font-mono text-sm">
           <button data-tab="tripForm" class="tabBtn px-4 py-2 rounded-sm bg-forest text-white">+ Nový výlet</button>
           <button data-tab="historyForm" class="tabBtn px-4 py-2 rounded-sm bg-forest/10 text-forest">+ Príspevok do histórie</button>
+          <button data-tab="routeForm" class="tabBtn px-4 py-2 rounded-sm bg-forest/10 text-forest">Mapa trasy</button>
+          <button data-tab="signupForm" class="tabBtn px-4 py-2 rounded-sm bg-forest/10 text-forest">Prihlasovanie</button>
         </div>
 
         <!-- Add trip form -->
@@ -368,6 +463,81 @@
             <span id="historyAddedMsg" class="hidden text-forest font-medium ml-4 text-sm"><i class="fa-solid fa-check mr-1"></i>Príspevok bol pridaný!</span>
           </div>
         </form>
+
+        <!-- Route map settings form -->
+        <form id="routeForm" class="tabPane hidden space-y-4">
+          <div>
+            <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Odkaz na mapu (Google Maps alebo mapy.cz)</label>
+            <input type="url" name="mapUrl" required placeholder="https://www.google.com/maps/embed?pb=... alebo https://frame.mapy.cz/s/..."
+              class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Popis trasy (zobrazí sa pod mapou)</label>
+            <input type="text" name="description" placeholder="napr. Zraz na stanici → štart pri chate → okruh na vrchol → späť na stanicu"
+              class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
+          </div>
+          <div>
+            <button type="submit" class="bg-rust hover:bg-rust-dark text-white font-semibold px-6 py-3 rounded-sm transition-colors">
+              <i class="fa-solid fa-floppy-disk mr-1.5"></i>Uložiť mapu trasy
+            </button>
+            <span id="routeSavedMsg" class="hidden text-forest font-medium ml-4 text-sm"><i class="fa-solid fa-check mr-1"></i>Mapa bola uložená!</span>
+          </div>
+
+          <div class="mt-2 pt-4 border-t border-forest/10 grid sm:grid-cols-2 gap-6">
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wide text-ink/50 mb-2">
+                <i class="fa-solid fa-circle-info mr-1"></i>Postup — Google Maps
+              </p>
+              <ol class="list-decimal list-inside text-sm text-ink/70 space-y-1.5">
+                <li>Otvor <span class="font-medium">Google Maps</span> a klikni na <span class="font-medium">"Trasa"</span>.</li>
+                <li>Zadaj miesto <span class="font-medium">štartu</span> a <span class="font-medium">cieľa</span> výletu.</li>
+                <li>V ľavom paneli klikni na <span class="font-medium">⋮</span> → <span class="font-medium">"Vložiť mapu na web stránku"</span>.</li>
+                <li>Skopíruj len adresu z <span class="font-mono text-xs bg-forest/5 px-1 rounded">src="..."</span> a vlož ju vyššie.</li>
+              </ol>
+            </div>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-wide text-ink/50 mb-2">
+                <i class="fa-solid fa-circle-info mr-1"></i>Postup — mapy.cz (odporúčané pre turistiku)
+              </p>
+              <ol class="list-decimal list-inside text-sm text-ink/70 space-y-1.5">
+                <li>Na <span class="font-medium">mapy.cz</span> naplánuj <span class="font-medium">peší výlet</span> (má aj prevýšenie a trasy KST).</li>
+                <li>Klikni na <span class="font-medium">"Zdieľať"</span> v pravom paneli.</li>
+                <li>Prepni na záložku <span class="font-medium">"Vložiť mapu do vlastných stránok"</span>.</li>
+                <li>Skopíruj adresu z <span class="font-mono text-xs bg-forest/5 px-1 rounded">src="..."</span> a vlož ju vyššie.</li>
+              </ol>
+            </div>
+          </div>
+        </form>
+
+        <!-- Signup form settings -->
+        <form id="signupForm" class="tabPane hidden space-y-4">
+          <div>
+            <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Odkaz na Google Form (embed)</label>
+            <input type="url" name="formUrl" placeholder="https://docs.google.com/forms/d/e/xxxxx/viewform?embedded=true"
+              class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
+          </div>
+          <div>
+            <button type="submit" class="bg-rust hover:bg-rust-dark text-white font-semibold px-6 py-3 rounded-sm transition-colors">
+              <i class="fa-solid fa-floppy-disk mr-1.5"></i>Uložiť prihlasovací formulár
+            </button>
+            <span id="signupSavedMsg" class="hidden text-forest font-medium ml-4 text-sm"><i class="fa-solid fa-check mr-1"></i>Uložené!</span>
+          </div>
+
+          <div class="mt-2 pt-4 border-t border-forest/10">
+            <p class="font-mono text-xs uppercase tracking-wide text-ink/50 mb-2">
+              <i class="fa-solid fa-circle-info mr-1"></i>Ako to nastaviť (raz, potom to beží samo)
+            </p>
+            <ol class="list-decimal list-inside text-sm text-ink/70 space-y-1.5">
+              <li>Choď na <span class="font-medium">forms.google.com</span> a vytvor nový formulár pod účtom <span class="font-medium">ssos.kosice@gmail.com</span> (aby si bol jediný, kto vidí odpovede).</li>
+              <li>Pridaj polia: <span class="font-medium">Meno</span>, <span class="font-medium">Priezvisko</span>, <span class="font-medium">Prezývka/alias</span>, <span class="font-medium">Trieda</span> a <span class="font-medium">"Vyber výlet"</span> (rozbaľovací zoznam s dátumami — zodpovedá týždňom).</li>
+              <li>Čas prihlásenia sa zapisuje <span class="font-medium">automaticky</span> — Google Forms pridá stĺpec "Časová pečiatka" do prepojenej tabuľky sám, netreba nič nastavovať.</li>
+              <li>V pravom hornom rohu formulára klikni na <span class="font-medium">"Odoslať"</span> (ikona šípky), prepni na záložku <span class="font-medium">"&lt;&gt;"</span> (Vložiť).</li>
+              <li>Skopíruj len adresu z <span class="font-mono text-xs bg-forest/5 px-1 rounded">src="https://docs.google.com/forms/d/e/.../viewform?embedded=true"</span> a vlož ju vyššie.</li>
+              <li>Odpovede nájdeš v Google Forms pod záložkou <span class="font-medium">"Odpovede"</span> → prepojiť s tabuľkou (Sheets). Iba ty (majiteľ účtu) ich vidíš — žiaci vidia len potvrdenie svojho odoslania.</li>
+              <li>Pre týždenné triedenie použi v tabuľke <span class="font-medium">Dáta → Zobrazenia filtra</span> podľa stĺpca "Vyber výlet" — vždy uvidíš len prihlásených na konkrétny termín.</li>
+            </ol>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -390,6 +560,11 @@
         <li>
           <a href="https://www.facebook.com/profile.php?id=100039495501705" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-mustard transition-colors">
             <i class="fa-brands fa-facebook w-4 text-white/50"></i> Škola na Facebooku
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/ssosetke/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-mustard transition-colors">
+            <i class="fa-brands fa-instagram w-4 text-white/50"></i> Škola na Instagrame
           </a>
         </li>
       </ul>
@@ -427,8 +602,31 @@
 (function(){
   const TRIPS_KEY = 'ssosturisti_trips';
   const HISTORY_KEY = 'ssosturisti_history';
+  const ROUTE_MAP_KEY = 'ssosturisti_routeMap';
   const ADMIN_PASSWORD = 'turista2026';
   let isAdmin = false;
+
+  const defaultRouteMap = {
+    url: 'https://www.google.com/maps?q=%C5%BDelezni%C4%8Dn%C3%A1%20stanica%20Ko%C5%A1ice&output=embed',
+    description: 'Zraz je vždy na stanici, odtiaľ presun na miesto štartu konkrétneho výletu, okruh do cieľa a späť na to isté miesto zrazu.'
+  };
+
+  function loadRouteMap(){
+    try {
+      const raw = localStorage.getItem(ROUTE_MAP_KEY);
+      if (!raw) return { ...defaultRouteMap };
+      const parsed = JSON.parse(raw);
+      return { url: parsed.url || defaultRouteMap.url, description: parsed.description || defaultRouteMap.description };
+    } catch(e){ return { ...defaultRouteMap }; }
+  }
+  let routeMap = loadRouteMap();
+
+  function renderRouteMap(){
+    const frame = document.getElementById('routeMapFrame');
+    const desc = document.getElementById('routeMapDesc');
+    if (frame) frame.src = routeMap.url;
+    if (desc) desc.textContent = routeMap.description;
+  }
 
   const defaultTrips = [
     { date: '2026-09-05', route: 'Vrátna dolina – Chleb (Malá Fatra)', difficulty: 'náročná', meeting: 'pred školou, 6:30', gear: 'trekové palice, pevná obuv, 2 l vody, pláštenka' },
@@ -466,6 +664,36 @@
     return '#B23A2E';
   }
 
+  // Vytvorenie .ics súboru pre "Pridať do kalendára" (funguje bez akéhokoľvek servera)
+  function icsEscape(str){
+    return String(str).replace(/([,;])/g, '\\$1').replace(/\n/g, '\\n');
+  }
+  function pad2(n){ return n < 10 ? '0' + n : '' + n; }
+  function icsDateFromISO(iso){ return iso.replace(/-/g, ''); }
+  function icsNextDay(iso){
+    const d = new Date(iso + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}`;
+  }
+  function buildTripICS(t){
+    const start = icsDateFromISO(t.date);
+    const end = icsNextDay(t.date);
+    const uid = `ssosturisti-${start}-${Math.random().toString(36).slice(2,8)}@ssosturisti`;
+    const desc = icsEscape(`Náročnosť: ${t.difficulty}. Zraz: ${t.meeting}. So sebou: ${t.gear}.`);
+    const lines = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//SSOSturisti//Vylet//SK','CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${start}T000000Z`,
+      `DTSTART;VALUE=DATE:${start}`,
+      `DTEND;VALUE=DATE:${end}`,
+      `SUMMARY:${icsEscape('Výlet SSOSturisti — ' + t.route)}`,
+      `DESCRIPTION:${desc}`,
+      'END:VEVENT','END:VCALENDAR'
+    ];
+    return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(lines.join('\r\n'));
+  }
+
   function tripCardHTML(t, idx){
     const delBtn = isAdmin ? `<button data-del-trip="${idx}" class="absolute top-3 right-3 text-ink/30 hover:text-rust" aria-label="Odstrániť výlet"><i class="fa-solid fa-trash"></i></button>` : '';
     return `
@@ -483,6 +711,10 @@
         <p><i class="fa-solid fa-clock w-5 text-rust"></i> Zraz: <span class="font-medium">${t.meeting}</span></p>
         <p><i class="fa-solid fa-backpack w-5 text-rust"></i> So sebou: <span class="font-medium">${t.gear}</span></p>
       </div>
+      <a href="${buildTripICS(t)}" download="vylet-${t.date}.ics"
+        class="mt-4 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wide text-rust hover:text-white hover:bg-rust border border-rust/40 hover:border-rust rounded-sm px-3 py-2 transition-colors">
+        <i class="fa-solid fa-calendar-plus"></i> Pridať do kalendára
+      </a>
     </div>`;
   }
 
@@ -515,10 +747,31 @@
     </div>`;
   }
 
+  function daysWord(n){
+    if (n === 1) return 'deň';
+    if (n >= 2 && n <= 4) return 'dni';
+    return 'dní';
+  }
+
+  function updateCountdown(){
+    const el = document.getElementById('nextTripCountdown');
+    if (!el) return;
+    const todayIso = new Date().toISOString().slice(0,10);
+    const upcoming = trips.filter(t => t.date >= todayIso).sort((a,b)=> a.date.localeCompare(b.date));
+    if (!upcoming.length){ el.textContent = ''; return; }
+    const next = upcoming[0];
+    const today = new Date(todayIso + 'T00:00:00');
+    const target = new Date(next.date + 'T00:00:00');
+    const diffDays = Math.round((target - today) / 86400000);
+    if (diffDays === 0){ el.textContent = 'Dnes vyrážame na výlet! 🥾'; }
+    else if (diffDays === 1){ el.textContent = 'Zajtra vyrážame na výlet!'; }
+    else { el.textContent = `Do ďalšieho výletu zostáva ${diffDays} ${daysWord(diffDays)}`; }
+  }
+
   function renderTrips(){
     const grid = document.getElementById('tripsGrid');
     const empty = document.getElementById('tripsEmpty');
-    if (!trips.length){ grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+    if (!trips.length){ grid.innerHTML = ''; empty.classList.remove('hidden'); updateCountdown(); return; }
     empty.classList.add('hidden');
     const sorted = trips.map((t,i)=>({...t, _i:i})).sort((a,b)=> a.date.localeCompare(b.date));
     grid.innerHTML = sorted.map(t => tripCardHTML(t, t._i)).join('');
@@ -528,11 +781,14 @@
         trips.splice(i,1); save(TRIPS_KEY, trips); renderTrips();
       });
     });
+    updateCountdown();
   }
 
   function renderHistory(){
-    const grid = document.getElementById('historyGrid');
+    const grid = document.getElementById('historyDynamic');
     const empty = document.getElementById('historyEmpty');
+    const statCount = document.getElementById('statTripsCount');
+    if (statCount) statCount.textContent = history.length;
     if (!history.length){ grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
     empty.classList.add('hidden');
     const sorted = history.map((h,i)=>({...h, _i:i})).sort((a,b)=> b.date.localeCompare(a.date));
@@ -547,6 +803,7 @@
 
   renderTrips();
   renderHistory();
+  renderRouteMap();
 
   // Hudba na pozadí — automatické spustenie po načítaní + prepínacie tlačidlo
   const bgAudio = document.getElementById('bgAudio');
@@ -760,6 +1017,33 @@
     const msg = document.getElementById('historyAddedMsg');
     msg.classList.remove('hidden');
     setTimeout(()=> msg.classList.add('hidden'), 2500);
+  });
+
+  // Route map settings — predvyplnenie aktuálnymi hodnotami
+  const routeForm = document.getElementById('routeForm');
+  routeForm.mapUrl.value = routeMap.url;
+  routeForm.description.value = routeMap.description;
+
+  routeForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const f = e.target;
+    const url = f.mapUrl.value.trim();
+    const isValid = /^https:\/\/www\.google\.com\/maps/.test(url) && /embed/.test(url);
+    if (!isValid){
+      alert('Toto nevyzerá ako platný odkaz z Google Maps "Vložiť mapu". Skontroluj, či adresa začína https://www.google.com/maps a obsahuje slovo "embed".');
+      return;
+    }
+    routeMap = { url, description: f.description.value.trim() || defaultRouteMap.description };
+    try {
+      localStorage.setItem(ROUTE_MAP_KEY, JSON.stringify(routeMap));
+    } catch(err){
+      alert('Úložisko prehliadača je plné, mapu sa nepodarilo uložiť.');
+      return;
+    }
+    renderRouteMap();
+    const routeMsg = document.getElementById('routeSavedMsg');
+    routeMsg.classList.remove('hidden');
+    setTimeout(()=> routeMsg.classList.add('hidden'), 2500);
   });
 })();
 </script>
