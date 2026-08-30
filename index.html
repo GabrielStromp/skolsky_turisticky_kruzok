@@ -641,13 +641,16 @@
   }
 
   // Prihlasovací formulár (Google Form embed nastavený administrátorom)
+  const defaultSignupForm = {
+    url: 'https://docs.google.com/forms/d/e/1FAIpQLSep8E-IJxEjWRPSLES5DW4PN2tc38AkssqQ44WyEWf4xOZwtQ/viewform?embedded=true'
+  };
   function loadSignupForm(){
     try {
       const raw = localStorage.getItem(SIGNUP_FORM_KEY);
-      if (!raw) return { url: '' };
+      if (!raw) return { ...defaultSignupForm };
       const parsed = JSON.parse(raw);
-      return { url: parsed.url || '' };
-    } catch(e){ return { url: '' }; }
+      return { url: parsed.url || defaultSignupForm.url };
+    } catch(e){ return { ...defaultSignupForm }; }
   }
   let signupForm = loadSignupForm();
 
