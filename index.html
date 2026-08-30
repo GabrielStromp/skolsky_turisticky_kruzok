@@ -603,6 +603,7 @@
   const TRIPS_KEY = 'ssosturisti_trips';
   const HISTORY_KEY = 'ssosturisti_history';
   const ROUTE_MAP_KEY = 'ssosturisti_routeMap';
+  const SIGNUP_FORM_KEY = 'ssosturisti_signupForm';
   const ADMIN_PASSWORD = 'turista2026';
   let isAdmin = false;
 
@@ -621,11 +622,60 @@
   }
   let routeMap = loadRouteMap();
 
+  // Univerzálna validácia — príjme odkaz z Google Maps AJ z mapy.cz/mapy.com
+  function isValidMapUrl(url){
+    try {
+      const u = new URL(url);
+      if (u.protocol !== 'https:') return false;
+      if (u.hostname === 'www.google.com' && u.pathname.startsWith('/maps') && url.includes('embed')) return true;
+      if (u.hostname.endsWith('mapy.cz') || u.hostname.endsWith('mapy.com')) return true;
+      return false;
+    } catch(e){ return false; }
+  }
+
   function renderRouteMap(){
     const frame = document.getElementById('routeMapFrame');
     const desc = document.getElementById('routeMapDesc');
     if (frame) frame.src = routeMap.url;
     if (desc) desc.textContent = routeMap.description;
+  }
+
+  // Prihlasovací formulár (Google Form embed nastavený administrátorom)
+  function loadSignupForm(){
+    try {
+      const raw = localStorage.getItem(SIGNUP_FORM_KEY);
+      if (!raw) return { url: '' };
+      const parsed = JSON.parse(raw);
+      return { url: parsed.url || '' };
+    } catch(e){ return { url: '' }; }
+  }
+  let signupForm = loadSignupForm();
+
+  function isValidGoogleFormUrl(url){
+    try {
+      const u = new URL(url);
+      return u.protocol === 'https:' && u.hostname === 'docs.google.com'
+        && u.pathname.startsWith('/forms/') && u.pathname.includes('viewform');
+    } catch(e){ return false; }
+  }
+
+  function renderSignupForm(){
+    const frame = document.getElementById('signupFormFrame');
+    const empty = document.getElementById('signupFormEmpty');
+    const link = document.getElementById('signupFormLink');
+    if (!frame || !empty || !link) return;
+    if (signupForm.url){
+      frame.src = signupForm.url;
+      frame.classList.remove('hidden');
+      empty.classList.add('hidden');
+      link.href = signupForm.url;
+      link.classList.remove('hidden');
+    } else {
+      frame.classList.add('hidden');
+      frame.src = '';
+      empty.classList.remove('hidden');
+      link.classList.add('hidden');
+    }
   }
 
   const defaultTrips = [
@@ -804,8 +854,7 @@
   renderTrips();
   renderHistory();
   renderRouteMap();
-
-  // Hudba na pozadí — automatické spustenie po načítaní + prepínacie tlačidlo
+  renderSignupForm();
   const bgAudio = document.getElementById('bgAudio');
   const audioBtn = document.getElementById('audioToggle');
   const audioIcon = document.getElementById('audioIcon');
@@ -1028,9 +1077,8 @@
     e.preventDefault();
     const f = e.target;
     const url = f.mapUrl.value.trim();
-    const isValid = /^https:\/\/www\.google\.com\/maps/.test(url) && /embed/.test(url);
-    if (!isValid){
-      alert('Toto nevyzerá ako platný odkaz z Google Maps "Vložiť mapu". Skontroluj, či adresa začína https://www.google.com/maps a obsahuje slovo "embed".');
+    if (!isValidMapUrl(url)){
+      alert('Toto nevyzerá ako platný odkaz na vloženie mapy. Použi odkaz z Google Maps ("Vložiť mapu na web stránku", musí obsahovať "embed") alebo z mapy.cz ("Vložiť mapu do vlastných stránok").');
       return;
     }
     routeMap = { url, description: f.description.value.trim() || defaultRouteMap.description };
@@ -1044,6 +1092,31 @@
     const routeMsg = document.getElementById('routeSavedMsg');
     routeMsg.classList.remove('hidden');
     setTimeout(()=> routeMsg.classList.add('hidden'), 2500);
+  });
+
+  // Nastavenie prihlasovacieho formulára (Google Forms)
+  const signupFormSettings = document.getElementById('signupForm');
+  signupFormSettings.formUrl.value = signupForm.url;
+
+  signupFormSettings.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const f = e.target;
+    const url = f.formUrl.value.trim();
+    if (url && !isValidGoogleFormUrl(url)){
+      alert('Toto nevyzerá ako platný odkaz na Google Form. Uisti sa, že adresa začína https://docs.google.com/forms/ a že si skopíroval odkaz zo záložky "Vložiť" (embed), nie odkaz na úpravu formulára.');
+      return;
+    }
+    signupForm = { url };
+    try {
+      localStorage.setItem(SIGNUP_FORM_KEY, JSON.stringify(signupForm));
+    } catch(err){
+      alert('Úložisko prehliadača je plné, formulár sa nepodarilo uložiť.');
+      return;
+    }
+    renderSignupForm();
+    const signupMsg = document.getElementById('signupSavedMsg');
+    signupMsg.classList.remove('hidden');
+    setTimeout(()=> signupMsg.classList.add('hidden'), 2500);
   });
 })();
 </script>
