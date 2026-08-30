@@ -250,7 +250,7 @@
       <i class="fa-solid fa-calendar-check text-rust"></i>
       <p class="text-sm text-ink/80">
         Práve prebieha prihlasovanie na: <span id="signupNextTripText" class="font-semibold text-forest"></span>
-        — vo formulári nižšie zadaj presne tento dátum.
+        — do políčka <span class="font-medium">"Poznámka"</span> vo formulári nižšie napíš tento dátum, nech vieme prihlásenie priradiť k správnemu výletu.
       </p>
     </div>
     <p id="signupNoTrip" class="hidden mb-6 text-sm text-ink/60 italic">
@@ -350,20 +350,20 @@
   <!-- Štatistika krúžku -->
   <div class="mt-12 pt-8 border-t border-forest/10 flex flex-wrap items-center justify-center gap-x-10 gap-y-5 text-center">
     <div>
-      <p class="font-display font-black text-2xl sm:text-3xl text-forest">420 km</p>
+      <p id="statTotalKm" class="font-display font-black text-2xl sm:text-3xl text-forest">0 km</p>
       <p class="text-xs font-mono text-ink/50 uppercase mt-1">od začiatku</p>
     </div>
     <div>
-      <p class="font-display font-black text-2xl sm:text-3xl text-forest">18 km</p>
-      <p class="text-xs font-mono text-ink/50 uppercase mt-1">tohto roku</p>
+      <p id="statYearKm" class="font-display font-black text-2xl sm:text-3xl text-forest">0 km</p>
+      <p class="text-xs font-mono text-ink/50 uppercase mt-1">tohto školského roku</p>
     </div>
     <div>
-      <p id="statTripsCount" class="font-display font-black text-2xl sm:text-3xl text-forest">3</p>
-      <p class="text-xs font-mono text-ink/50 uppercase mt-1">výletov</p>
+      <p id="statTripsCount" class="font-display font-black text-2xl sm:text-3xl text-forest">0</p>
+      <p class="text-xs font-mono text-ink/50 uppercase mt-1">zdokumentovaných výletov</p>
     </div>
     <div>
-      <p class="font-display font-black text-2xl sm:text-3xl text-forest">34</p>
-      <p class="text-xs font-mono text-ink/50 uppercase mt-1">účastníkov</p>
+      <p id="statParticipants" class="font-display font-black text-2xl sm:text-3xl text-forest">0</p>
+      <p class="text-xs font-mono text-ink/50 uppercase mt-1">účastníkov spolu</p>
     </div>
   </div>
 </section>
@@ -449,6 +449,14 @@
           <div class="sm:col-span-1">
             <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Názov</label>
             <input required type="text" name="title" placeholder="napr. Jesenná túra Slovenským rajom" class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
+          </div>
+          <div class="sm:col-span-1">
+            <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Počet účastníkov</label>
+            <input type="number" name="participants" min="0" step="1" placeholder="napr. 14" class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
+          </div>
+          <div class="sm:col-span-1">
+            <label class="block text-xs font-mono uppercase text-ink/60 mb-1.5">Prejdená vzdialenosť (km)</label>
+            <input type="number" name="distanceKm" min="0" step="0.1" placeholder="napr. 9.5" class="w-full border border-forest/25 rounded-sm px-3 py-2.5 bg-white">
           </div>
           <div class="sm:col-span-2">
             <div class="flex items-center justify-between mb-1.5">
@@ -699,9 +707,9 @@
   ];
 
   const defaultHistory = [
-    { date: '2026-05-17', title: 'Jarný výlet do Slovenského raja', text: 'Prešli sme roklinu Piecky za krásneho počasia, skupina zvládla celú trasu bez problémov a odmenou nám bol výhľad z Kláštoriska.', image: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5U3ByaW5nIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFQUYzRTQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjQ0ZFM0M4Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJoaWxsRmFyIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM1QzhDNjQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM0Y2QjQ5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM2MCIgZmlsbD0idXJsKCNza3lTcHJpbmcpIi8+CiAgPGNpcmNsZSBjeD0iNDIwIiBjeT0iNzAiIHI9IjM0IiBmaWxsPSIjRTRBODNEIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBhdGggZD0iTTAsMTgwIEw2MCwxMjAgTDEyMCwxNjUgTDE5MCw5NSBMMjUwLDE1MCBMMzIwLDEwMCBMMzkwLDE2MCBMNDQwLDEzMCBMNTAwLDE3MCBMNTAwLDM2MCBMMCwzNjAgWiIgZmlsbD0idXJsKCNoaWxsRmFyKSIgb3BhY2l0eT0iMC41NSIvPgogIDxwYXRoIGQ9Ik0wLDIzMCBMNzAsMTYwIEwxNDAsMjEwIEwyMTAsMTQwIEwyNzAsMjA1IEwzNDAsMTUwIEw0MTAsMjE1IEw0NzAsMTc1IEw1MDAsMjAwIEw1MDAsMzYwIEwwLDM2MCBaIiBmaWxsPSIjMkM0QTNBIi8+CiAgPHBhdGggZD0iTTE1MCwzNjAgQzE2MCwzMDAgMTkwLDI4MCAyMTAsMjMwIEMyMzAsMjgwIDI2MCwzMDAgMjcwLDM2MCBaIiBmaWxsPSIjOEZCM0M0IiBvcGFjaXR5PSIwLjc1Ii8+CiAgPHBhdGggZD0iTTYwLDMwMCBDODAsMzAwIDkwLDMyMCA5MCwzNDAgTDMwLDM0MCBDMzAsMzIwIDQwLDMwMCA2MCwzMDAgWiIgZmlsbD0iIzNGNkI0OSIvPgogIDxwYXRoIGQ9Ik00MjAsMjkwIEM0NDAsMjkwIDQ1MCwzMTUgNDUwLDMzNSBMMzkwLDMzNSBDMzkwLDMxNSA0MDAsMjkwIDQyMCwyOTAgWiIgZmlsbD0iIzNGNkI0OSIvPgogIDxwYXRoIGQ9Ik0xODAsMjcwIEMxOTUsMjcwIDIwMywyOTAgMjAzLDMwNSBMMTU3LDMwNSBDMTU3LDI5MCAxNjUsMjcwIDE4MCwyNzAgWiIgZmlsbD0iIzNGNkI0OSIvPgo8L3N2Zz4K' },
-    { date: '2026-02-08', title: 'Zimný výstup na Chopok', text: 'Prvý zimný výlet krúžku — naučili sme sa chodiť s mačkami a vyskúšali orientáciu v hmle. Náročnejšie, ale všetci to zvládli.', image: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5V2ludGVyIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjJFM0QiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM0E1Qzc0Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM2MCIgZmlsbD0idXJsKCNza3lXaW50ZXIpIi8+CiAgPGNpcmNsZSBjeD0iNDAwIiBjeT0iODAiIHI9IjI4IiBmaWxsPSIjRThFREYwIiBvcGFjaXR5PSIwLjkiLz4KICA8ZyBmaWxsPSIjRENFN0VFIiBvcGFjaXR5PSIwLjciPgogICAgPGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iMiIvPjxjaXJjbGUgY3g9IjE0MCIgY3k9IjQwIiByPSIxLjYiLz48Y2lyY2xlIGN4PSIyMjAiIGN5PSI3MCIgcj0iMiIvPgogICAgPGNpcmNsZSBjeD0iMzAwIiBjeT0iMzUiIHI9IjEuNiIvPjxjaXJjbGUgY3g9IjgwIiBjeT0iMTEwIiByPSIxLjYiLz48Y2lyY2xlIGN4PSIxNzAiIGN5PSI5MCIgcj0iMiIvPgogIDwvZz4KICA8cGF0aCBkPSJNMCwyNDAgTDgwLDE0MCBMMTMwLDE5MCBMMTkwLDExMCBMMjMwLDE3MCBMMjkwLDkwIEwzNDAsMTgwIEw0MDAsMTMwIEw0NjAsMjAwIEw1MDAsMTYwIEw1MDAsMzYwIEwwLDM2MCBaIiBmaWxsPSIjNUY3RTkyIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPHBhdGggZD0iTTAsMjgwIEw5MCwxOTAgTDE1MCwyMzAgTDIxMCwxNTAgTDI2MCwyMTUgTDMyMCwxNDAgTDM4MCwyMjUgTDQ0MCwxNzUgTDUwMCwyMTAgTDUwMCwzNjAgTDAsMzYwIFoiIGZpbGw9IiNFRUYzRjYiLz4KICA8cGF0aCBkPSJNMjEwLDE1MCBMMjYwLDIxNSBMMjMwLDIxNSBMMjQ1LDE5MCBaIiBmaWxsPSIjQjlDOUQzIi8+CiAgPHBhdGggZD0iTTMyMCwxNDAgTDM4MCwyMjUgTDM0NSwyMjUgTDM2MCwxOTUgWiIgZmlsbD0iI0I5QzlEMyIvPgogIDxwYXRoIGQ9Ik05MCwxOTAgTDE1MCwyMzAgTDEyMCwyMzAgTDEzMywyMDggWiIgZmlsbD0iI0I5QzlEMyIvPgo8L3N2Zz4K' },
-    { date: '2025-10-11', title: 'Jesenná túra Vrátnou dolinou', text: 'Farebné lesy, prvý sneh na vrcholoch a spoločné opekanie na chate ako odmena po zostupe.', image: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5QXV0dW1uIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGM0UzQzgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRTlDNzlBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM2MCIgZmlsbD0idXJsKCNza3lBdXR1bW4pIi8+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNDAiIGZpbGw9IiNFNEE4M0QiIG9wYWNpdHk9IjAuOCIvPgogIDxwYXRoIGQ9Ik0wLDIyMCBMNzAsMTUwIEwxNDAsMjAwIEwyMTAsMTMwIEwyNzAsMTkwIEwzNDAsMTQ1IEw0MTAsMjA1IEw0NzAsMTY1IEw1MDAsMTkwIEw1MDAsMzYwIEwwLDM2MCBaIiBmaWxsPSIjQkQ1QjMyIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPHBhdGggZD0iTTAsMjYwIEw4MCwxOTAgTDE1MCwyMzUgTDIyMCwxNzUgTDI4MCwyMzAgTDM1MCwxODUgTDQyMCwyNDAgTDQ4MCwyMDUgTDUwMCwyMjAgTDUwMCwzNjAgTDAsMzYwIFoiIGZpbGw9IiMyQzRBM0EiLz4KICA8ZyBvcGFjaXR5PSIwLjg1Ij4KICAgIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjI3MCIgcj0iMjYiIGZpbGw9IiM5QTQ3MjYiLz4KICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjI5MCIgcj0iMjAiIGZpbGw9IiNDNDYyMkQiLz4KICAgIDxjaXJjbGUgY3g9IjM2MCIgY3k9IjI4MCIgcj0iMjQiIGZpbGw9IiM5QTQ3MjYiLz4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjMwMCIgcj0iMTgiIGZpbGw9IiNFNEE4M0QiLz4KICAgIDxjaXJjbGUgY3g9IjI1MCIgY3k9IjMwMCIgcj0iMjIiIGZpbGw9IiNDNDYyMkQiLz4KICA8L2c+Cjwvc3ZnPgo=' },
+    { date: '2026-05-17', title: 'Jarný výlet do Slovenského raja', participants: 14, distanceKm: 9.5, text: 'Prešli sme roklinu Piecky za krásneho počasia, skupina zvládla celú trasu bez problémov a odmenou nám bol výhľad z Kláštoriska.', image: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5U3ByaW5nIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFQUYzRTQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjQ0ZFM0M4Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJoaWxsRmFyIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM1QzhDNjQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM0Y2QjQ5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM2MCIgZmlsbD0idXJsKCNza3lTcHJpbmcpIi8+CiAgPGNpcmNsZSBjeD0iNDIwIiBjeT0iNzAiIHI9IjM0IiBmaWxsPSIjRTRBODNEIiBvcGFjaXR5PSIwLjg1Ii8+CiAgPHBhdGggZD0iTTAsMTgwIEw2MCwxMjAgTDEyMCwxNjUgTDE5MCw5NSBMMjUwLDE1MCBMMzIwLDEwMCBMMzkwLDE2MCBMNDQwLDEzMCBMNTAwLDE3MCBMNTAwLDM2MCBMMCwzNjAgWiIgZmlsbD0idXJsKCNoaWxsRmFyKSIgb3BhY2l0eT0iMC41NSIvPgogIDxwYXRoIGQ9Ik0wLDIzMCBMNzAsMTYwIEwxNDAsMjEwIEwyMTAsMTQwIEwyNzAsMjA1IEwzNDAsMTUwIEw0MTAsMjE1IEw0NzAsMTc1IEw1MDAsMjAwIEw1MDAsMzYwIEwwLDM2MCBaIiBmaWxsPSIjMkM0QTNBIi8+CiAgPHBhdGggZD0iTTE1MCwzNjAgQzE2MCwzMDAgMTkwLDI4MCAyMTAsMjMwIEMyMzAsMjgwIDI2MCwzMDAgMjcwLDM2MCBaIiBmaWxsPSIjOEZCM0M0IiBvcGFjaXR5PSIwLjc1Ii8+CiAgPHBhdGggZD0iTTYwLDMwMCBDODAsMzAwIDkwLDMyMCA5MCwzNDAgTDMwLDM0MCBDMzAsMzIwIDQwLDMwMCA2MCwzMDAgWiIgZmlsbD0iIzNGNkI0OSIvPgogIDxwYXRoIGQ9Ik00MjAsMjkwIEM0NDAsMjkwIDQ1MCwzMTUgNDUwLDMzNSBMMzkwLDMzNSBDMzkwLDMxNSA0MDAsMjkwIDQyMCwyOTAgWiIgZmlsbD0iIzNGNkI0OSIvPgogIDxwYXRoIGQ9Ik0xODAsMjcwIEMxOTUsMjcwIDIwMywyOTAgMjAzLDMwNSBMMTU3LDMwNSBDMTU3LDI5MCAxNjUsMjcwIDE4MCwyNzAgWiIgZmlsbD0iIzNGNkI0OSIvPgo8L3N2Zz4K' },
+    { date: '2026-02-08', title: 'Zimný výstup na Chopok', participants: 11, distanceKm: 12, text: 'Prvý zimný výlet krúžku — naučili sme sa chodiť s mačkami a vyskúšali orientáciu v hmle. Náročnejšie, ale všetci to zvládli.', image: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5V2ludGVyIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMxQjJFM0QiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM0E1Qzc0Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM2MCIgZmlsbD0idXJsKCNza3lXaW50ZXIpIi8+CiAgPGNpcmNsZSBjeD0iNDAwIiBjeT0iODAiIHI9IjI4IiBmaWxsPSIjRThFREYwIiBvcGFjaXR5PSIwLjkiLz4KICA8ZyBmaWxsPSIjRENFN0VFIiBvcGFjaXR5PSIwLjciPgogICAgPGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iMiIvPjxjaXJjbGUgY3g9IjE0MCIgY3k9IjQwIiByPSIxLjYiLz48Y2lyY2xlIGN4PSIyMjAiIGN5PSI3MCIgcj0iMiIvPgogICAgPGNpcmNsZSBjeD0iMzAwIiBjeT0iMzUiIHI9IjEuNiIvPjxjaXJjbGUgY3g9IjgwIiBjeT0iMTEwIiByPSIxLjYiLz48Y2lyY2xlIGN4PSIxNzAiIGN5PSI5MCIgcj0iMiIvPgogIDwvZz4KICA8cGF0aCBkPSJNMCwyNDAgTDgwLDE0MCBMMTMwLDE5MCBMMTkwLDExMCBMMjMwLDE3MCBMMjkwLDkwIEwzNDAsMTgwIEw0MDAsMTMwIEw0NjAsMjAwIEw1MDAsMTYwIEw1MDAsMzYwIEwwLDM2MCBaIiBmaWxsPSIjNUY3RTkyIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPHBhdGggZD0iTTAsMjgwIEw5MCwxOTAgTDE1MCwyMzAgTDIxMCwxNTAgTDI2MCwyMTUgTDMyMCwxNDAgTDM4MCwyMjUgTDQ0MCwxNzUgTDUwMCwyMTAgTDUwMCwzNjAgTDAsMzYwIFoiIGZpbGw9IiNFRUYzRjYiLz4KICA8cGF0aCBkPSJNMjEwLDE1MCBMMjYwLDIxNSBMMjMwLDIxNSBMMjQ1LDE5MCBaIiBmaWxsPSIjQjlDOUQzIi8+CiAgPHBhdGggZD0iTTMyMCwxNDAgTDM4MCwyMjUgTDM0NSwyMjUgTDM2MCwxOTUgWiIgZmlsbD0iI0I5QzlEMyIvPgogIDxwYXRoIGQ9Ik05MCwxOTAgTDE1MCwyMzAgTDEyMCwyMzAgTDEzMywyMDggWiIgZmlsbD0iI0I5QzlEMyIvPgo8L3N2Zz4K' },
+    { date: '2025-10-11', title: 'Jesenná túra Vrátnou dolinou', participants: 16, distanceKm: 8, text: 'Farebné lesy, prvý sneh na vrcholoch a spoločné opekanie na chate ako odmena po zostupe.', image: 'data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDM2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5QXV0dW1uIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGM0UzQzgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRTlDNzlBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iNTAwIiBoZWlnaHQ9IjM2MCIgZmlsbD0idXJsKCNza3lBdXR1bW4pIi8+CiAgPGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iNDAiIGZpbGw9IiNFNEE4M0QiIG9wYWNpdHk9IjAuOCIvPgogIDxwYXRoIGQ9Ik0wLDIyMCBMNzAsMTUwIEwxNDAsMjAwIEwyMTAsMTMwIEwyNzAsMTkwIEwzNDAsMTQ1IEw0MTAsMjA1IEw0NzAsMTY1IEw1MDAsMTkwIEw1MDAsMzYwIEwwLDM2MCBaIiBmaWxsPSIjQkQ1QjMyIiBvcGFjaXR5PSIwLjU1Ii8+CiAgPHBhdGggZD0iTTAsMjYwIEw4MCwxOTAgTDE1MCwyMzUgTDIyMCwxNzUgTDI4MCwyMzAgTDM1MCwxODUgTDQyMCwyNDAgTDQ4MCwyMDUgTDUwMCwyMjAgTDUwMCwzNjAgTDAsMzYwIFoiIGZpbGw9IiMyQzRBM0EiLz4KICA8ZyBvcGFjaXR5PSIwLjg1Ij4KICAgIDxjaXJjbGUgY3g9IjEyMCIgY3k9IjI3MCIgcj0iMjYiIGZpbGw9IiM5QTQ3MjYiLz4KICAgIDxjaXJjbGUgY3g9IjE2MCIgY3k9IjI5MCIgcj0iMjAiIGZpbGw9IiNDNDYyMkQiLz4KICAgIDxjaXJjbGUgY3g9IjM2MCIgY3k9IjI4MCIgcj0iMjQiIGZpbGw9IiM5QTQ3MjYiLz4KICAgIDxjaXJjbGUgY3g9IjQwMCIgY3k9IjMwMCIgcj0iMTgiIGZpbGw9IiNFNEE4M0QiLz4KICAgIDxjaXJjbGUgY3g9IjI1MCIgY3k9IjMwMCIgcj0iMjIiIGZpbGw9IiNDNDYyMkQiLz4KICA8L2c+Cjwvc3ZnPgo=' },
   ];
 
   function load(key, fallback){
@@ -806,7 +814,11 @@
         <p class="font-mono text-xs uppercase tracking-widest text-rust mb-2">${formatDate(h.date)}</p>
         <h3 class="font-display font-bold text-lg text-forest mb-2 leading-snug">${h.title}</h3>
         <p class="text-sm text-ink/70 leading-relaxed">${h.text}</p>
-        ${photos.length > 1 ? `<p class="text-xs font-mono text-ink/40 mt-2"><i class="fa-solid fa-images mr-1"></i>${photos.length} fotiek</p>` : ''}
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs font-mono text-ink/40">
+          ${photos.length > 1 ? `<span><i class="fa-solid fa-images mr-1"></i>${photos.length} fotiek</span>` : ''}
+          ${h.participants ? `<span><i class="fa-solid fa-users mr-1"></i>${h.participants} účastníkov</span>` : ''}
+          ${h.distanceKm ? `<span><i class="fa-solid fa-route mr-1"></i>${h.distanceKm} km</span>` : ''}
+        </div>
       </div>
     </div>`;
   }
@@ -870,11 +882,47 @@
     updateSignupBanner();
   }
 
+  function schoolYearStartISO(){
+    const now = new Date();
+    // školský rok začína v septembri — ak je aktuálny mesiac pred septembrom, ešte trvá minuloročný školský rok
+    const year = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+    return `${year}-09-01`;
+  }
+
+  function formatKm(n){
+    // zobrazí desatinné miesto len ak je naozaj potrebné (napr. 9.5 km, ale 20 km nie 20.0 km)
+    const rounded = Math.round(n * 10) / 10;
+    return `${rounded % 1 === 0 ? rounded : rounded.toFixed(1)} km`;
+  }
+
+  function updateHistoryStats(){
+    const totalKmEl = document.getElementById('statTotalKm');
+    const yearKmEl = document.getElementById('statYearKm');
+    const participantsEl = document.getElementById('statParticipants');
+    if (!totalKmEl || !yearKmEl || !participantsEl) return;
+
+    const yearStart = schoolYearStartISO();
+    let totalKm = 0, yearKm = 0, totalParticipants = 0;
+
+    history.forEach(h => {
+      const km = Number(h.distanceKm) || 0;
+      const p = Number(h.participants) || 0;
+      totalKm += km;
+      totalParticipants += p;
+      if (h.date >= yearStart) yearKm += km;
+    });
+
+    totalKmEl.textContent = formatKm(totalKm);
+    yearKmEl.textContent = formatKm(yearKm);
+    participantsEl.textContent = totalParticipants;
+  }
+
   function renderHistory(){
     const grid = document.getElementById('historyDynamic');
     const empty = document.getElementById('historyEmpty');
     const statCount = document.getElementById('statTripsCount');
     if (statCount) statCount.textContent = history.length;
+    updateHistoryStats();
     if (!history.length){ grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
     empty.classList.add('hidden');
     const sorted = history.map((h,i)=>({...h, _i:i})).sort((a,b)=> b.date.localeCompare(a.date));
@@ -1085,6 +1133,8 @@
     history.push({
       date: f.date.value,
       title: f.title.value.trim(),
+      participants: f.participants.value ? Number(f.participants.value) : null,
+      distanceKm: f.distanceKm.value ? Number(f.distanceKm.value) : null,
       photos: selectedPhotos.slice(),
       text: f.text.value.trim(),
     });
