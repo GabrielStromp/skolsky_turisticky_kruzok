@@ -241,13 +241,24 @@
   <div class="max-w-3xl mx-auto px-5 sm:px-8">
     <p class="font-mono text-rust text-xs tracking-[0.2em] uppercase mb-3">Ideš s nami?</p>
     <h2 class="font-display font-bold text-3xl sm:text-4xl text-forest mb-5">Prihlás sa na výlet</h2>
-    <p class="text-ink/75 leading-relaxed mb-8">
+    <p class="text-ink/75 leading-relaxed mb-4">
       Vyplň krátky formulár — meno, priezvisko, prezývku aj triedu. Systém si k tomu automaticky
       zaznamená aj čas prihlásenia. Zoznam prihlásených vidí len vedúci krúžku.
     </p>
 
+    <div id="signupNextTrip" class="hidden mb-6 flex items-center gap-3 bg-mustard/15 border border-mustard/40 rounded-sm px-4 py-3">
+      <i class="fa-solid fa-calendar-check text-rust"></i>
+      <p class="text-sm text-ink/80">
+        Práve prebieha prihlasovanie na: <span id="signupNextTripText" class="font-semibold text-forest"></span>
+        — vo formulári nižšie zadaj presne tento dátum.
+      </p>
+    </div>
+    <p id="signupNoTrip" class="hidden mb-6 text-sm text-ink/60 italic">
+      Momentálne nie je naplánovaný žiadny výlet — sleduj <a href="#plan" class="text-rust hover:underline">plán výletov</a> vyššie.
+    </p>
+
     <div id="signupFormWrap" class="bg-card ticket-edge rounded-sm overflow-hidden">
-      <iframe id="signupFormFrame" class="w-full hidden" style="min-height: 620px;" loading="lazy" title="Prihlasovací formulár na výlet"></iframe>
+      <iframe id="signupFormFrame" class="w-full hidden" style="height: 420px;" loading="lazy" title="Prihlasovací formulár na výlet"></iframe>
       <div id="signupFormEmpty" class="p-8 text-center text-ink/60">
         <i class="fa-solid fa-clipboard-list text-3xl text-forest/30 mb-3"></i>
         <p class="text-sm">Prihlasovací formulár zatiaľ nie je nastavený. Ozvi sa vedúcemu krúžku, prípadne — ak si administrátor — nastav ho v sekcii Administrácia.</p>
@@ -806,13 +817,18 @@
     return 'dní';
   }
 
+  function findNextTrip(){
+    const todayIso = new Date().toISOString().slice(0,10);
+    const upcoming = trips.filter(t => t.date >= todayIso).sort((a,b)=> a.date.localeCompare(b.date));
+    return upcoming.length ? upcoming[0] : null;
+  }
+
   function updateCountdown(){
     const el = document.getElementById('nextTripCountdown');
     if (!el) return;
+    const next = findNextTrip();
+    if (!next){ el.textContent = ''; return; }
     const todayIso = new Date().toISOString().slice(0,10);
-    const upcoming = trips.filter(t => t.date >= todayIso).sort((a,b)=> a.date.localeCompare(b.date));
-    if (!upcoming.length){ el.textContent = ''; return; }
-    const next = upcoming[0];
     const today = new Date(todayIso + 'T00:00:00');
     const target = new Date(next.date + 'T00:00:00');
     const diffDays = Math.round((target - today) / 86400000);
@@ -821,10 +837,26 @@
     else { el.textContent = `Do ďalšieho výletu zostáva ${diffDays} ${daysWord(diffDays)}`; }
   }
 
+  function updateSignupBanner(){
+    const box = document.getElementById('signupNextTrip');
+    const textEl = document.getElementById('signupNextTripText');
+    const noTrip = document.getElementById('signupNoTrip');
+    if (!box || !textEl || !noTrip) return;
+    const next = findNextTrip();
+    if (!next){
+      box.classList.add('hidden');
+      noTrip.classList.remove('hidden');
+      return;
+    }
+    noTrip.classList.add('hidden');
+    box.classList.remove('hidden');
+    textEl.textContent = `${formatDate(next.date)} — ${next.route}`;
+  }
+
   function renderTrips(){
     const grid = document.getElementById('tripsGrid');
     const empty = document.getElementById('tripsEmpty');
-    if (!trips.length){ grid.innerHTML = ''; empty.classList.remove('hidden'); updateCountdown(); return; }
+    if (!trips.length){ grid.innerHTML = ''; empty.classList.remove('hidden'); updateCountdown(); updateSignupBanner(); return; }
     empty.classList.add('hidden');
     const sorted = trips.map((t,i)=>({...t, _i:i})).sort((a,b)=> a.date.localeCompare(b.date));
     grid.innerHTML = sorted.map(t => tripCardHTML(t, t._i)).join('');
@@ -835,6 +867,7 @@
       });
     });
     updateCountdown();
+    updateSignupBanner();
   }
 
   function renderHistory(){
